@@ -1,6 +1,5 @@
 ---
-description: 
-globs: 
+description: Project style—data/React conventions, Next URL state, tooling (`nr`).
 alwaysApply: true
 ---
 # Cursor Style Guide
@@ -18,10 +17,13 @@ High level rule: "Prefer simple and clean, over complex".
 - Keep data transformation close to where it's used (like appending '%' in the JSX)
 - Use inline arrays for small, static data sets instead of declaring variables
 - Use array indices for generating keys when the data is static and order won't change
-- Prefer **object spread for props** when wiring values from scope, e.g. `{...{ isLeft }}` or `{...{ agreementReady, ModeSwitcherUI, overlapOnly }}`, instead of repeating `name={name}`. Do not rewrite spread forms to the long form for "clarity"—this is the intended style.
+- Prefer **object spread for props** when wiring values from scope, e.g. `{...{ isLeft }}` or `{...{ activeTab, ModeSwitcherUI }}`, instead of repeating `name={name}`. Do not rewrite spread forms to the long form for "clarity"—this is the intended style.
 
 ## Code Organization
 - Minimize intermediate variables when they don't add clarity
 
 ## Commands
 - `nr` means `npm run` in this repo (e.g. `nr build`). Do not rewrite `nr` to `next`, `npx`, or `npm run` in comments or docs unless the user asks.
+
+## Naming
+- Prefer plain names that say **what the module is or does** (layout, text block, container).
