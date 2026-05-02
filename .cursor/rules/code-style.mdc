@@ -18,6 +18,7 @@ High level rule: "Prefer simple and clean, over complex".
 - Keep data transformation close to where it's used (like appending '%' in the JSX)
 - Use inline arrays for small, static data sets instead of declaring variables
 - Use array indices for generating keys when the data is static and order won't change
+- Prefer **object spread for props** when wiring values from scope, e.g. `{...{ isLeft }}` or `{...{ agreementReady, ModeSwitcherUI, overlapOnly }}`, instead of repeating `name={name}`. Do not rewrite spread forms to the long form for "clarity"—this is the intended style.
 
 ## Code Organization
 - Minimize intermediate variables when they don't add clarity
