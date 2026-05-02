@@ -1,0 +1,31 @@
+---
+description: Name useEffect and useLayoutEffect callbacks for stack traces and search
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Named effect callbacks
+
+Pass a **named function** as the first argument to `useEffect` and `useLayoutEffect` (same style as `function syncTabFromUrl()` in `useLayoutEffect`).
+
+- Makes React DevTools and stack traces name the effect.
+- Makes the file grep-friendly (`function scheduleFoo`).
+
+```tsx
+// ❌ Avoid
+useEffect(() => {
+  if (!open) return
+  const t = setTimeout(onClose, 300)
+  return () => clearTimeout(t)
+}, [open, onClose])
+
+// ✅ Prefer
+useEffect(
+  function scheduleCloseWhenOpen() {
+    if (!open) return
+    const t = setTimeout(onClose, 300)
+    return () => clearTimeout(t)
+  },
+  [open, onClose],
+)
+```
