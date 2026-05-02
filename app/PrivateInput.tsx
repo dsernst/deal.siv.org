@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 
 import type { Inputs } from './Content'
 
-import { formatIntegerThousands, normalizeDigitsOnly } from './formatDisplay'
+import { formatIntegerThousands, normalizePriceInput } from './formatDisplay'
 
 export function PrivateInput({
   inputs,
@@ -32,7 +32,7 @@ export function PrivateInput({
           autoFocus
           className="px-3 py-2 h-20 w-40 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-number-controls text-3xl"
           inputMode="numeric"
-          onChange={(e) => setTempInput(normalizeDigitsOnly(e.target.value))}
+          onChange={(e) => setTempInput(normalizePriceInput(e.target.value))}
           onKeyDown={(e) => e.key === 'Enter' && $submit.current?.click()}
           pattern="\d*"
           type="text"

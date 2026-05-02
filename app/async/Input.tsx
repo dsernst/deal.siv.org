@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 
-import { formatIntegerThousands, normalizeDigitsOnly } from '../formatDisplay'
+import { formatIntegerThousands, normalizePriceInput } from '../formatDisplay'
 import { type Choices, roles } from './RoleSelector'
 
 export function Input({
@@ -32,7 +32,7 @@ export function Input({
           className="px-3 py-2 h-20 w-48 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-number-controls text-3xl"
           id="price-input"
           inputMode="numeric"
-          onChange={(e) => setInput(normalizeDigitsOnly(e.target.value))}
+          onChange={(e) => setInput(normalizePriceInput(e.target.value))}
           onKeyDown={(e) => e.key === 'Enter' && $submit.current?.click()}
           pattern="\d*"
           type="text"
