@@ -1,4 +1,4 @@
-# [deal.dsernst.com](https://deal.dsernst.com)
+# [deal.siv.org](https://deal.siv.org)
 
 A new kind of negotiation:
 
