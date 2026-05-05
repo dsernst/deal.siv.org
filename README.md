@@ -101,7 +101,7 @@ So: **one-shot-ness is critical** to preserving honesty incentives.
 &nbsp;  
 
 <details>
-<summary>&nbsp;<strong>- Enforcing One-Shot Agreements</strong> — social vs legal</summary>
+<summary>&nbsp;&nbsp;&nbsp;<strong>↳ Enforcing One-Shot Agreements</strong> — social vs legal</summary>
 
 ### Type 1 - Verbal/Social One-Shot Agreement
 
