@@ -2,7 +2,7 @@
 
 A new kind of negotiation:
 
-#### Strategyproof. Private. Fair. Chill.
+#### Strategyproof. Private. Fair. Calm.
 
 Works for job offers, acquisitions, favors, and more.
 
