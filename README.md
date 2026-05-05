@@ -13,7 +13,7 @@ Works for job offers, acquisitions, favors, and more.
 - Guaranteed fairness and mutual surplus
 - No post-negotiation regret or information leakage
 
-## 🔑 Core Protocol
+## Core Protocol
 
 Each party commits to:
 
@@ -30,7 +30,7 @@ The protocol does:
 fair_price = randomIntegerBetween(seller_min_ask, buyer_max_bid)
 ```
 
-### 🧠 Why the Uniform Random Price
+### Why the Uniform Random Price
 
 - **Privacy-preserving:** Reveals less about the individual inputs than midpoint
 - **Truth-inducing:** There’s no advantage to lying
@@ -40,7 +40,7 @@ fair_price = randomIntegerBetween(seller_min_ask, buyer_max_bid)
 
 On average, both sides gain. In any round, neither side can exploit the other.
 
-### 📈 Economic Implications
+### Economic Implications
 
 If adopted:
 
@@ -48,7 +48,7 @@ If adopted:
 - Faster resolution of deals, from personal favors to billion-dollar M&A
 - Strategically, **defangs aggressive negotiation tactics**, encouraging better long-term relationships
 
-### 🎯 “One-Shot” Commitment = Strategic Key
+### “One-Shot” Commitment = Strategic Key
 
 The “one-shot” rule isn’t just a formality—it’s what makes honesty the winning move.
 
@@ -77,7 +77,7 @@ This is what makes it **strategyproof**.
 
 So: **one-shot-ness is critical** to preserving honesty incentives.
 
-### 💡 Summary of Strategyproof Conditions
+### Summary of Strategyproof Conditions
 
 These are the conditions under which **truth-telling becomes the optimal strategy**:
 
