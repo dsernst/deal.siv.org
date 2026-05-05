@@ -10,8 +10,8 @@ Works for job offers, acquisitions, favors, and more.
 
 - Dominant-strategy truthfulness
 - No trusted third party
-- Guaranteed fairness and mutual surplus
-- No post-negotiation regret or information leakage
+- Promote fairness & mutual surplus
+- Minimize information leakage & post-negotiation regret
 
 ---
 
