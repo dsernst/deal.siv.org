@@ -45,12 +45,7 @@ export function ResultDisplay({ result, title }: { result: MPCResult; title?: st
 
 function TitleHeading({ title }: { title?: string }) {
   if (!title) return null
-  return (
-    <p className="text-white font-medium text-center">
-      <i>Title: </i>
-      {title}
-    </p>
-  )
+  return <p className="text-white font-medium text-center">{title}</p>
 }
 
 const ReturnHomeLink = () => (

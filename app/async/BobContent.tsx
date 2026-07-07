@@ -78,10 +78,7 @@ export function BobContent() {
       {!bobsValue ? (
         <div className="flex flex-col items-center gap-4">
           {aliceData.title && (
-            <p className="text-white font-medium text-center">
-              <i>Title: </i>
-              {aliceData.title}
-            </p>
+            <p className="text-white font-medium text-center">{aliceData.title}</p>
           )}
           <p className="text-gray-400 text-center mb-4">
             You{"'"}ve been invited as a potential{' '}
