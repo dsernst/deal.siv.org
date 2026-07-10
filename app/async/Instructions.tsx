@@ -4,15 +4,28 @@ import { Check, Lock, X } from 'lucide-react'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 
 export const instructionSteps = [
-  <>
-    <p>
-      You can only submit your value <span className="italic">once</span>.
-    </p>
-    <p className="flex items-center justify-center gap-2">
-      <Lock className="size-[15px] shrink-0 text-white/40" strokeWidth={1.75} />
+  <div className="flex flex-col gap-4 text-left sm:items-center sm:text-center" key="once">
+    <OutcomeRow
+      centered
+      icon={
+        <IconSlot>
+          <span className="text-[11px] font-semibold tabular-nums text-white/45">1</span>
+        </IconSlot>
+      }
+    >
+      You can only submit your <span className="italic whitespace-nowrap">value once.</span>
+    </OutcomeRow>
+    <OutcomeRow
+      centered
+      icon={
+        <IconSlot>
+          <Lock className="size-3.5 text-white/45" strokeWidth={1.75} />
+        </IconSlot>
+      }
+    >
       Neither side will see the other&apos;s input.
-    </p>
-  </>,
+    </OutcomeRow>
+  </div>,
   <>
     <div className="flex flex-col gap-5 text-left">
       <OutcomeRow
@@ -170,6 +183,14 @@ function Hint({ children }: { children: ReactNode }) {
   )
 }
 
+function IconSlot({ children }: { children: ReactNode }) {
+  return (
+    <span className="flex h-[1.375em] w-5 shrink-0 items-center justify-center rounded-md bg-white/8">
+      {children}
+    </span>
+  )
+}
+
 function InstructionLogEntry({
   children,
   entering,
@@ -195,7 +216,7 @@ function InstructionLogEntry({
     >
       <div className="min-h-0 overflow-hidden">
         <div
-          className={`flex flex-col gap-4 text-base leading-relaxed transition-[color,opacity] duration-500 ease-out ${isCurrent ? 'text-white/60' : 'text-white/38'} ${isFirst ? 'text-center' : ''} ${entering && open ? 'instruction-flow-in' : entering ? 'opacity-0' : ''}`}
+          className={`flex flex-col gap-4 text-left text-base leading-relaxed transition-[color,opacity] duration-500 ease-out ${isCurrent ? 'text-white/60' : 'text-white/38'} ${entering && open ? 'instruction-flow-in' : entering ? 'opacity-0' : ''}`}
         >
           {children}
         </div>
@@ -204,11 +225,19 @@ function InstructionLogEntry({
   )
 }
 
-function OutcomeRow({ children, icon }: { children: ReactNode; icon: ReactNode }) {
+function OutcomeRow({
+  centered,
+  children,
+  icon,
+}: {
+  centered?: boolean
+  children: ReactNode
+  icon: ReactNode
+}) {
   return (
-    <div className="flex items-start gap-3">
+    <div className={`flex items-start gap-3 ${centered ? 'sm:justify-center' : ''}`}>
       {icon}
-      <p className="leading-snug text-white/60">{children}</p>
+      <p className={`leading-snug text-white/60 ${centered ? 'sm:text-center' : ''}`}>{children}</p>
     </div>
   )
 }
