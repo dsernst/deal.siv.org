@@ -26,7 +26,7 @@ export function RoleSelector({
               className={`cursor-pointer rounded-2xl border px-6 py-5 text-left transition-colors ${
                 selected
                   ? 'border-cyan-400/25 bg-cyan-400/8'
-                  : 'border-white/[0.07] bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]'
+                  : 'border-white/[0.07] bg-white/2 hover:border-white/15 hover:bg-white/4'
               }`}
               key={role}
               onClick={() => onSelect(choice)}

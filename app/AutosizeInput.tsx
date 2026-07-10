@@ -18,7 +18,7 @@ export function AutosizeInput({
       </span>
       <input
         {...props}
-        className={`absolute left-0 top-0 z-10 h-16 sm:h-20 w-full min-w-0 box-border rounded-xl border border-white/15 bg-white/[0.03] px-3 py-2 text-2xl sm:text-3xl text-white focus:border-white/25 focus:outline-none focus:ring-2 focus:ring-white/20 no-number-controls ${className}`}
+        className={`absolute left-0 top-0 z-10 h-16 sm:h-20 w-full min-w-0 box-border rounded-xl border border-white/15 bg-white/3 px-3 py-2 text-2xl sm:text-3xl text-white focus:border-white/25 focus:outline-none focus:ring-2 focus:ring-white/20 no-number-controls ${className}`}
       />
     </div>
   )

@@ -138,7 +138,7 @@ function TitleSection({
           <span className="text-[10px] uppercase tracking-[0.22em] text-white/25">Name</span>
           <input
             autoFocus
-            className="w-full rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-white/20 focus:border-white/20 focus:bg-white/[0.05] focus:outline-none transition-colors"
+            className="w-full rounded-xl border border-white/[0.07] bg-white/3 px-4 py-3 text-[15px] text-white placeholder:text-white/20 focus:border-white/20 focus:bg-white/5 focus:outline-none transition-colors"
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
               if (e.key !== 'Enter') return
@@ -153,7 +153,7 @@ function TitleSection({
         <label className="flex flex-col gap-2 text-left">
           <span className="text-[10px] uppercase tracking-[0.22em] text-white/25">Deal</span>
           <input
-            className="w-full rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-white/20 focus:border-white/20 focus:bg-white/[0.05] focus:outline-none transition-colors"
+            className="w-full rounded-xl border border-white/[0.07] bg-white/3 px-4 py-3 text-[15px] text-white placeholder:text-white/20 focus:border-white/20 focus:bg-white/5 focus:outline-none transition-colors"
             onBlur={() => name.trim() && dealTitle.trim() && setDealDone(true)}
             onChange={(e) => {
               setDealTitle(e.target.value)

@@ -46,7 +46,7 @@ export function Input({
       <div className={`w-full ${animate ? 'instruction-stagger-2' : ''}`}>
         <AutosizeInput
           autoFocus={!animate}
-          className="border-white/15 bg-white/[0.03] rounded-xl text-white focus:ring-white/20 focus:border-white/25"
+          className="border-white/15 bg-white/3 rounded-xl text-white focus:ring-white/20 focus:border-white/25"
           id="price-input"
           inputMode="numeric"
           onChange={(e) => setInput(normalizePriceInput(e.target.value))}
