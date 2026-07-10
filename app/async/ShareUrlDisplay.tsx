@@ -9,28 +9,28 @@ export function ShareUrlDisplay({ payload }: { payload: CompactPayload }) {
   const [copied, setCopied] = useState(false)
 
   return (
-    <div className="flex flex-col items-center gap-4 max-w-2xl">
-      <h2 className="text-2xl font-semibold">Your Share URL</h2>
-      <div className="flex gap-2 w-full">
+    <div className="flex w-full max-w-lg flex-col items-center gap-6">
+      <h2 className="text-xl font-medium text-white/90">Your Share URL</h2>
+      <div className="flex w-full gap-2">
         <input
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-md bg-gray-900 text-sm"
+          className="min-w-0 flex-1 rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-sm text-white"
           readOnly
           type="text"
           value={shareUrl}
         />
         <button
-          className="px-4 py-2 border border-blue-500 text-blue-500 rounded-md cursor-pointer hover:bg-blue-500/10 active:bg-blue-500/20"
+          className="shrink-0 cursor-pointer rounded-xl border border-cyan-400/20 bg-cyan-400/8 px-5 py-3 text-sm font-medium text-white/90 transition-colors hover:bg-cyan-400/12"
           onClick={() => {
             navigator.clipboard.writeText(shareUrl)
             setCopied(true)
           }}
+          type="button"
         >
           {!copied ? 'Copy' : 'Copied!'}
         </button>
       </div>
-      <p className="text-sm text-gray-400 text-center">
-        Share this URL with the other party. They can use it to complete the
-        negotiation.
+      <p className="text-center text-sm text-white/40">
+        Share this URL with the other party. They can use it to complete the negotiation.
       </p>
     </div>
   )

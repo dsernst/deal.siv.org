@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { useRef, useState } from 'react'
 
 import { LearnMoreLink } from '../LearnMoreLink'
+import { SiteHeader } from '../SiteHeader'
 import { CompactPayload } from './binaryEncoding'
 import { Input } from './Input'
+import { StepNext } from './Instructions'
 import { InviteTitle } from './InviteTitle'
 import { type Choices, RoleSelector } from './RoleSelector'
 import { ShareUrlDisplay } from './ShareUrlDisplay'
@@ -27,20 +29,22 @@ export function Content() {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-10 w-full">
+      <SiteHeader />
+
+      <div className="flex w-full max-w-md flex-col items-center gap-10">
         <TitleSection
           {...{ dealTitle, name, setDealTitle, setName, titleStepDone }}
           onNext={() => setTitleStepDone(true)}
         />
 
         {titleStepDone && (
-          <div className="w-full max-w-md border-t border-white/10 pt-10 flex flex-col items-center">
+          <div className="flex w-full flex-col items-center border-t border-white/8 pt-10">
             <RoleSelector onSelect={setRole} selectedRole={role} />
           </div>
         )}
 
         {role && (
-          <div className="w-full max-w-md border-t border-white/10 pt-10 flex flex-col items-center">
+          <div className="flex w-full flex-col items-center border-t border-white/8 pt-10">
             <Input onSubmit={setValue} role={role} />
           </div>
         )}
@@ -71,6 +75,7 @@ function ShareUrlScreen({
 }) {
   return (
     <>
+      <SiteHeader />
       {loading ? (
         <p className="text-gray-400">Creating your Share URL...</p>
       ) : signedPayload ? (
@@ -177,13 +182,7 @@ function TitleSection({
           Skip
         </button>
       ) : (
-        <button
-          className="px-10 py-2.5 border border-white/20 rounded-full cursor-pointer hover:bg-white/[0.04] active:bg-white/[0.07] transition-colors"
-          onClick={onNext}
-          type="button"
-        >
-          Next
-        </button>
+        <StepNext onClick={onNext} />
       )}
     </div>
   )

@@ -8,7 +8,7 @@ import type { PlaintextData } from './binaryEncoding'
 import { LearnMoreLink } from '../LearnMoreLink'
 import { BobSubmission } from './BobSubmission'
 import { Input } from './Input'
-import { InstructionLog, StepActions, StepDots } from './Instructions'
+import { INSTRUCTION_STEP_COUNT, InstructionLog, StepActions } from './Instructions'
 import { InviteTitle } from './InviteTitle'
 import { ResultDisplay } from './ResultDisplay'
 
@@ -21,6 +21,8 @@ type ValidateResponse =
       used: boolean
     }
 
+const INPUT_STEP = INSTRUCTION_STEP_COUNT
+
 export function BobContent() {
   const params = useParams()
   const pathname = usePathname()
@@ -30,27 +32,29 @@ export function BobContent() {
   const [error, setError] = useState<null | string>(null)
   const [loading, setLoading] = useState(true)
   const [step, setStep] = useState(0)
+  const [showInput, setShowInput] = useState(false)
   const [existingResult, setExistingResult] = useState<null | {
     hasOverlap: boolean
     result: null | number
   }>(null)
   const prevStep = useRef(0)
   const inputRef = useRef<HTMLDivElement>(null)
-  const [inputAnimating, setInputAnimating] = useState(false)
 
   useEffect(() => {
-    const entering = step === 2 && prevStep.current < 2
-    if (entering) setInputAnimating(true)
-    if (step !== 2) setInputAnimating(false)
-
-    if (entering) {
-      const id = window.setTimeout(() => {
-        inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      }, 300)
-      prevStep.current = step
-      return () => window.clearTimeout(id)
+    if (step !== INPUT_STEP) return setShowInput(false)
+    const revealId = window.setTimeout(() => setShowInput(true), 500)
+    const scrollId = window.setTimeout(() => {
+      inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, 900)
+    prevStep.current = step
+    return () => {
+      window.clearTimeout(revealId)
+      window.clearTimeout(scrollId)
     }
+  }, [step])
 
+  useEffect(() => {
+    if (step === INPUT_STEP) return
     prevStep.current = step
   }, [step])
 
@@ -102,30 +106,29 @@ export function BobContent() {
     return <BobSubmission alicePayload={payload!} bobsValue={bobsValue} onError={setError} />
 
   return (
-    <div className="flex flex-col items-center w-full max-w-md gap-7">
+    <div className="flex w-full flex-col items-center gap-10">
       <InviteTitle subtitle={`You're the potential ${bobRole}.`} title={aliceData.title} />
-      <StepDots step={step} total={3} />
 
-      <div className="flex flex-col items-center gap-8 w-full px-4">
-        <InstructionLog showAll={step >= 2} step={Math.min(step, 1)} />
+      <div className="flex w-full flex-col items-center gap-8">
+        <InstructionLog step={step} />
 
-        {step < 2 ? (
+        {step < INPUT_STEP ? (
           <StepActions
             onBack={step > 0 ? () => setStep(step - 1) : undefined}
             onClick={() => setStep(step + 1)}
           />
         ) : (
-          <div
-            className={`flex w-full scroll-mb-8 flex-col items-center gap-8 ${inputAnimating ? 'instruction-input-in' : ''}`}
-            ref={inputRef}
-          >
-            <Input
-              label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
-              onBack={() => setStep(1)}
-              onSubmit={setBobsValue}
-            />
-            <LearnMoreLink />
-          </div>
+          showInput && (
+            <div className="flex w-full scroll-mb-8 flex-col items-center gap-8" ref={inputRef}>
+              <Input
+                animate
+                label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
+                onBack={() => setStep(INSTRUCTION_STEP_COUNT - 1)}
+                onSubmit={setBobsValue}
+              />
+              <LearnMoreLink />
+            </div>
+          )
         )}
       </div>
     </div>

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 
 import './globals.css'
 import { description, title } from './constants'
-import { SiteHeader } from './SiteHeader'
 
 export const metadata: Metadata = { description, title }
 
@@ -14,13 +13,8 @@ export default function RootLayout({
   return (
     <html className="dark" lang="en">
       <body className="antialiased">
-        <div className="min-h-dvh p-8 pt-4 flex flex-col items-center text-center">
-          <div className="my-auto flex w-full flex-col items-center gap-6">
-            <SiteHeader />
-
-            {/* Content */}
-            {children}
-          </div>
+        <div className="flex min-h-dvh flex-col items-center px-6 py-10 text-center sm:px-8">
+          <div className="my-auto flex w-full max-w-lg flex-col items-center gap-10">{children}</div>
         </div>
       </body>
     </html>
