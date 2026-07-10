@@ -37,12 +37,14 @@ export function Content() {
           onNext={() => setTitleStepDone(true)}
         />
 
+        {/* Role */}
         {titleStepDone && (
           <div className="flex w-full flex-col items-center border-t border-white/8 pt-10">
             <RoleSelector onSelect={setRole} selectedRole={role} />
           </div>
         )}
 
+        {/* Value */}
         {role && (
           <div className="flex w-full flex-col items-center border-t border-white/8 pt-10">
             <Input onSubmit={setValue} role={role} />
