@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 import { formatCurrency } from '../formatDisplay'
@@ -49,7 +50,11 @@ export function ResultDisplay({ result, title }: { result: MPCResult; title?: st
 }
 
 const ReturnHomeLink = () => (
-  <Link className="text-sm mt-10 text-white/30 block hover:text-white/50 transition-colors" href="/async">
-    <span className="text-xs">↩</span> Home
+  <Link
+    className="mt-10 inline-flex items-center gap-1.5 text-sm text-white/30 transition-colors hover:text-white/50"
+    href="/async"
+  >
+    <ArrowLeft className="size-3.5" strokeWidth={1.75} />
+    Home
   </Link>
 )
