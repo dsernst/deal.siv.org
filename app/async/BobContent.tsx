@@ -8,7 +8,7 @@ import type { PlaintextData } from './binaryEncoding'
 import { LearnMoreLink } from '../LearnMoreLink'
 import { BobSubmission } from './BobSubmission'
 import { Input } from './Input'
-import { InstructionPanel, InstructionStep, StepActions, StepDots } from './Instructions'
+import { InstructionStep, StepDots } from './Instructions'
 import { InviteTitle } from './InviteTitle'
 import { ResultDisplay } from './ResultDisplay'
 
@@ -78,14 +78,13 @@ export function BobContent() {
 
   const aliceRole = aliceData.r
   const bobRole = aliceRole === 'b' ? 'seller' : 'buyer'
-  const roleLabel = bobRole === 'buyer' ? 'Buyer' : 'Seller'
 
   if (bobsValue) return <BobSubmission alicePayload={payload!} bobsValue={bobsValue} onError={setError} />
 
   return (
     <div className="flex flex-col items-center w-full max-w-md gap-7">
-      <InviteTitle title={aliceData.title} />
-      <StepDots step={step} />
+      <InviteTitle subtitle={`You're the potential ${bobRole}.`} title={aliceData.title} />
+      <StepDots step={step} total={3} />
 
       {step < 2 && (
         <InstructionStep
@@ -96,25 +95,10 @@ export function BobContent() {
       )}
 
       {step === 2 && (
-        <div className="flex flex-col items-center gap-8 w-full px-4">
-          <InstructionPanel>
-            <div className="flex flex-col gap-3 text-base leading-relaxed text-white/60 text-center">
-              <p>
-                You&apos;re the potential{' '}
-                <strong className="font-normal text-white">{roleLabel}</strong> in this deal.
-              </p>
-              <p className="text-sm text-white/35">Ready to enter your number?</p>
-            </div>
-          </InstructionPanel>
-          <StepActions onBack={() => setStep(1)} onClick={() => setStep(3)} />
-        </div>
-      )}
-
-      {step === 3 && (
         <>
           <Input
             label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
-            onBack={() => setStep(2)}
+            onBack={() => setStep(1)}
             onSubmit={setBobsValue}
           />
           <LearnMoreLink />
