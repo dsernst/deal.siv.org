@@ -34,7 +34,8 @@ export const instructionSteps = [
         </span>
       }
     >
-      If there is an overlap, a fair random win-win price will be picked between min &amp; max.
+      If there is an overlap, a win-win price is picked within our limits, centered on the midpoint,
+      with random noise for privacy.
     </OutcomeRow>
     <OutcomeRow
       icon={
@@ -47,9 +48,8 @@ export const instructionSteps = [
     </OutcomeRow>
   </div>,
   <Hint key="hint">
-    Unlike traditional negotiations, both sides&apos; best move here is to enter your honest
-    cutoff point, to not miss potential win-win deals. &ldquo;Posturing&rdquo; is a losing
-    strategy.
+    Unlike traditional negotiations, both sides&apos; best move here is to enter your honest cutoff
+    point, to not miss potential win-win deals. &ldquo;Posturing&rdquo; is a losing strategy.
   </Hint>,
 ] as const
 
@@ -213,7 +213,13 @@ function InstructionLogEntry({
       <div className="min-h-0 overflow-hidden">
         <div
           className={`flex flex-col gap-4 text-left text-base leading-relaxed transition-[opacity,transform] duration-700 ease-out ${
-            isCurrent ? 'opacity-100' : age === 1 ? 'opacity-40' : age >= 2 ? 'opacity-25' : 'opacity-30'
+            isCurrent
+              ? 'opacity-100'
+              : age === 1
+                ? 'opacity-40'
+                : age >= 2
+                  ? 'opacity-25'
+                  : 'opacity-30'
           } ${entering && open ? 'instruction-flow-in' : entering ? 'opacity-0' : ''}`}
         >
           {children}
