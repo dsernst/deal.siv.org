@@ -13,12 +13,14 @@ export function Input({
   onBack,
   onSubmit,
   role,
+  submitLabel = 'Next',
 }: {
   animate?: boolean
   label?: string
   onBack?: () => void
   onSubmit: (value: string) => void
   role?: Choices
+  submitLabel?: string
 }) {
   const [input, setInput] = useState('')
   const $submit = useRef<HTMLButtonElement>(null)
@@ -61,7 +63,7 @@ export function Input({
         onClick={() => input && onSubmit(input)}
         ref={$submit}
       >
-        Next
+        {submitLabel}
       </StepNext>
 
       {onBack && (

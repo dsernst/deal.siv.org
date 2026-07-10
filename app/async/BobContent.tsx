@@ -125,6 +125,7 @@ export function BobContent() {
                 label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
                 onBack={() => setStep(INSTRUCTION_STEP_COUNT - 1)}
                 onSubmit={setBobsValue}
+                submitLabel="Do we have a win-win deal?"
               />
               <LearnMoreLink />
             </div>
