@@ -45,7 +45,7 @@ export const instructionSteps = [
 
 export function InstructionPanel({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full rounded-2xl border border-cyan-400/10 bg-gradient-to-b from-cyan-400/[0.06] to-cyan-400/[0.02] px-6 py-7 backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+    <div className="w-full rounded-2xl border border-cyan-400/10 bg-linear-to-b from-cyan-400/6 to-cyan-400/2 px-6 py-7 backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
       {children}
     </div>
   )
@@ -143,7 +143,7 @@ export function StepNext({
 
 function Hint({ children }: { children: ReactNode }) {
   return (
-    <p className="mt-6 border-t border-white/[0.06] pt-6 text-left text-sm leading-relaxed text-white/40">
+    <p className="mt-6 border-t border-white/6 pt-6 text-left text-sm leading-relaxed text-white/40">
       <span className="text-white/55">Hint:</span> {children}
     </p>
   )
