@@ -14,29 +14,27 @@ export function RoleSelector({
   selectedRole?: Choices | null
 }) {
   return (
-    <div className="flex flex-col items-center gap-6">
-      <h2 className="text-2xl font-semibold mb-2">Are you the...</h2>
+    <div className="flex w-full flex-col items-center gap-8">
+      <h2 className="text-xl font-medium text-white/90">Are you the...</h2>
 
-      <div className="flex gap-4">
+      <div className="grid w-full gap-3 sm:grid-cols-2">
         {roles.map(([role, description]) => {
           const choice = role.toLowerCase() as Choices
           const selected = selectedRole === choice
           return (
             <button
-              className={`px-8 py-4 border rounded-md transition-colors text-lg font-medium cursor-pointer ${
+              className={`cursor-pointer rounded-2xl border px-6 py-5 text-left transition-colors ${
                 selected
-                  ? 'border-blue-500 bg-blue-500/10'
-                  : 'border-gray-300 hover:bg-gray-100/10 active:bg-gray-100/20'
+                  ? 'border-cyan-400/25 bg-cyan-400/8'
+                  : 'border-white/[0.07] bg-white/2 hover:border-white/15 hover:bg-white/4'
               }`}
               key={role}
               onClick={() => onSelect(choice)}
+              type="button"
             >
-            Potential {role}
-            <br />
-            <span className="text-sm text-gray-400 font-normal">
-              {description}
-            </span>
-          </button>
+              <span className="block text-[17px] font-medium text-white">Potential {role}</span>
+              <span className="mt-1 block text-sm text-white/40">{description}</span>
+            </button>
           )
         })}
       </div>

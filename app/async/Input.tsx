@@ -1,19 +1,26 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { AutosizeInput } from '../AutosizeInput'
 import { formatIntegerThousands, normalizePriceInput } from '../formatDisplay'
+import { StepBack, StepNext } from './Instructions'
 import { type Choices, roles } from './RoleSelector'
 
 export function Input({
+  animate,
   label,
+  onBack,
   onSubmit,
   role,
+  submitLabel = 'Next',
 }: {
+  animate?: boolean
   label?: string
+  onBack?: () => void
   onSubmit: (value: string) => void
   role?: Choices
+  submitLabel?: string
 }) {
   const [input, setInput] = useState('')
   const $submit = useRef<HTMLButtonElement>(null)
@@ -21,15 +28,24 @@ export function Input({
   const choice = roles.find(([r]) => r.toLowerCase() === role)
   const [roleTitle, description] = choice || []
 
-  return (
-    <div className="inline-flex gap-4">
-      <div className="flex flex-col items-stretch">
-        <label className="text-sm font-medium mb-1 text-center" htmlFor="price-input">
-          {label || `${roleTitle}'s ${description}`}
-        </label>
+  useEffect(() => {
+    if (!animate) return
+    const id = window.setTimeout(() => document.getElementById('price-input')?.focus(), 1200)
+    return () => window.clearTimeout(id)
+  }, [animate])
 
+  return (
+    <div className="flex w-full flex-col items-stretch">
+      <label
+        className={`mb-3 block text-center text-[10px] uppercase tracking-[0.22em] text-white/25 sm:mb-4 ${animate ? 'instruction-stagger-1' : ''}`}
+        htmlFor="price-input"
+      >
+        {label || `${roleTitle}'s ${description}`}
+      </label>
+
+      <div className={`w-full ${animate ? 'instruction-stagger-2' : ''}`}>
         <AutosizeInput
-          autoFocus
+          autoFocus={!animate}
           id="price-input"
           inputMode="numeric"
           onChange={(e) => setInput(normalizePriceInput(e.target.value))}
@@ -37,18 +53,24 @@ export function Input({
           pattern="\d*"
           type="text"
           value={formatIntegerThousands(input)}
+          variant="async"
         />
-
-        {/* Submit Button */}
-        <button
-          className="mt-4 w-full cursor-pointer rounded-md border border-blue-500 px-4 py-2 text-white hover:bg-blue-500/10 active:bg-blue-500/20"
-          disabled={!input}
-          onClick={() => input && onSubmit(input)}
-          ref={$submit}
-        >
-          Next
-        </button>
       </div>
+
+      <StepNext
+        className={`mt-5 sm:mt-8 ${animate ? 'instruction-stagger-3' : ''}`}
+        disabled={!input}
+        onClick={() => input && onSubmit(input)}
+        ref={$submit}
+      >
+        {submitLabel}
+      </StepNext>
+
+      {onBack && (
+        <div className={`mt-3 ${animate ? 'instruction-stagger-3' : ''}`}>
+          <StepBack onClick={onBack} />
+        </div>
+      )}
     </div>
   )
 }

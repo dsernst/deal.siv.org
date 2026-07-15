@@ -49,7 +49,7 @@ export function BobSubmission({
       })
   }, [alicePayload, bobsValue, onError])
 
-  if (loading) return <p className="text-gray-400">Computing result...</p>
+  if (loading) return <p className="text-white/35 text-sm tracking-wide animate-pulse">Computing result...</p>
 
   if (!result) return null
 
