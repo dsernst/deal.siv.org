@@ -9,7 +9,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ payload: string }>
 }): Promise<Metadata> {
-  const { payload } = await params
+  const { payload: rawPayload } = await params
+  const payload = decodeURIComponent(rawPayload)
   const result = decryptAndValidatePayload(payload)
   const dealTitle = result.data?.title
 
