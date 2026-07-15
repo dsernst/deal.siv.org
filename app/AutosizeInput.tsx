@@ -12,13 +12,13 @@ export function AutosizeInput({
     <div className="relative inline-block min-h-20 self-center min-w-40">
       <span
         aria-hidden
-        className="invisible flex h-20 items-center whitespace-pre border border-transparent box-border px-3 text-3xl pointer-events-none select-none"
+        className="invisible flex h-20 items-center whitespace-pre border border-transparent box-border px-3 text-center text-3xl pointer-events-none select-none"
       >
         {measure}
       </span>
       <input
         {...props}
-        className={`absolute left-0 top-0 z-10 h-20 w-full min-w-0 box-border border border-gray-300 rounded-md px-3 py-2 text-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 no-number-controls ${className}`}
+        className={`absolute left-0 top-0 z-10 h-20 w-full min-w-0 box-border border border-gray-300 rounded-md px-3 py-2 text-center text-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 no-number-controls ${className}`}
       />
     </div>
   )
