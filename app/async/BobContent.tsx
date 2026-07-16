@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import type { PlaintextData } from './binaryEncoding'
@@ -22,7 +22,8 @@ type ValidateResponse =
 
 export function BobContent() {
   const params = useParams()
-  const payload = params?.payload as string | undefined
+  const pathname = usePathname()
+  const payload = readPayloadParam(params?.payload) ?? readPayloadFromPath(pathname)
   const [aliceData, setAliceData] = useState<null | PlaintextData>(null)
   const [bobsValue, setBobsValue] = useState<null | string>(null)
   const [error, setError] = useState<null | string>(null)
@@ -44,8 +45,13 @@ export function BobContent() {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     })
-      .then((res) => res.json())
-      .then((data: ValidateResponse) => {
+      .then(async (res) => {
+        const data: ValidateResponse = await res.json()
+        if (!res.ok) {
+          setError('error' in data ? data.error : 'Failed to validate payload')
+          return setLoading(false)
+        }
+
         setLoading(false)
         if ('error' in data) return setError(data.error)
 
@@ -63,7 +69,8 @@ export function BobContent() {
       })
   }, [payload])
 
-  if (loading) return <p className="text-gray-400 mt-8 animate-pulse">Loading invite...</p>
+  if (loading)
+    return <p className="text-white/35 text-sm tracking-wide animate-pulse">Loading invite...</p>
 
   if (error || !aliceData) return <p className="text-red-400">{error || 'Invalid payload'}</p>
 
@@ -73,29 +80,47 @@ export function BobContent() {
   const aliceRole = aliceData.r
   const bobRole = aliceRole === 'b' ? 'seller' : 'buyer'
 
+  if (bobsValue)
+    return <BobSubmission alicePayload={payload!} bobsValue={bobsValue} onError={setError} />
+
   return (
-    <>
-      {!bobsValue ? (
-        <div className="flex flex-col items-center gap-4">
-          {aliceData.title && (
-            <p className="text-white font-medium text-center">{aliceData.title}</p>
-          )}
-          <p className="text-gray-400 text-center mb-4">
-            You{"'"}ve been invited as a potential{' '}
-            <span className="font-semibold">{bobRole === 'buyer' ? 'Buyer' : 'Seller'}</span>.
-          </p>
-          <Input
-            label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}:`}
-            onSubmit={setBobsValue}
-          />
+    <div className="flex w-full flex-col items-center gap-5 sm:gap-8">
+      <p className="text-balance text-lg text-white/70 sm:text-xl">
+        You&apos;ve been invited as a{' '}
+        <span className="font-medium text-white">{bobRole === 'buyer' ? 'Buyer' : 'Seller'}</span>
+        {aliceData.title ? (
+          <>
+            {' '}
+            for <span className="font-medium text-white">{aliceData.title}</span>
+          </>
+        ) : null}
+        .
+      </p>
 
-          <Instructions />
-
-          <LearnMoreLink />
-        </div>
-      ) : (
-        <BobSubmission alicePayload={payload!} bobsValue={bobsValue} onError={setError} />
-      )}
-    </>
+      <div className="flex w-full flex-col items-stretch gap-6 sm:gap-8">
+        <Input
+          label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
+          onSubmit={setBobsValue}
+          submitLabel="Do we have a win-win deal?"
+        />
+        <Instructions />
+        <LearnMoreLink className="text-sm text-white/30 mt-2 block hover:text-white/50 transition-colors" />
+      </div>
+    </div>
   )
+}
+
+function readPayloadFromPath(pathname: null | string) {
+  if (!pathname?.startsWith('/b/')) return undefined
+  return readPayloadParam(pathname.slice(3))
+}
+
+function readPayloadParam(value: string | string[] | undefined) {
+  const raw = Array.isArray(value) ? value.join('/') : value
+  if (!raw) return undefined
+  try {
+    return decodeURIComponent(raw)
+  } catch {
+    return raw
+  }
 }
