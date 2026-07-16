@@ -1,13 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { LearnMoreLink } from '../LearnMoreLink'
 import { SiteHeader } from '../SiteHeader'
 import { CompactPayload } from './binaryEncoding'
 import { Input } from './Input'
-import { Instructions, StepNext } from './Instructions'
+import {
+  INSTRUCTION_STEP_COUNT,
+  InstructionLog,
+  StepActions,
+  StepNext,
+} from './Instructions'
 import { InviteTitle } from './InviteTitle'
 import { type Choices, RoleSelector } from './RoleSelector'
 import { ShareUrlDisplay } from './ShareUrlDisplay'
@@ -15,13 +20,30 @@ import { useInitiatePayload } from './useInitiatePayload'
 
 type Role = Choices | null
 
+const INPUT_STEP = INSTRUCTION_STEP_COUNT
+
 export function Content() {
   const [titleStepDone, setTitleStepDone] = useState(false)
   const [title, setTitle] = useState('')
   const [role, setRole] = useState<Role>(null)
+  const [step, setStep] = useState(0)
+  const [showInput, setShowInput] = useState(false)
   const [value, setValue] = useState<null | string>(null)
+  const inputRef = useRef<HTMLDivElement>(null)
 
   const { loading, signedPayload } = useInitiatePayload(role, value, title)
+
+  useEffect(() => {
+    if (!role || step !== INPUT_STEP) return setShowInput(false)
+    const revealId = window.setTimeout(() => setShowInput(true), 280)
+    const scrollId = window.setTimeout(() => {
+      inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, 480)
+    return () => {
+      window.clearTimeout(revealId)
+      window.clearTimeout(scrollId)
+    }
+  }, [role, step])
 
   if (value) return <ShareUrlScreen {...{ loading, signedPayload }} />
 
@@ -40,9 +62,29 @@ export function Content() {
           )}
 
           {role && (
-            <div className="flex w-full flex-col items-stretch gap-6 border-t border-white/8 pt-10 sm:gap-8">
-              <Input onSubmit={setValue} role={role} />
-              <Instructions />
+            <div className="flex w-full flex-col items-stretch gap-4 border-t border-white/8 pt-10 sm:gap-6">
+              <InstructionLog step={step} />
+
+              {step < INPUT_STEP ? (
+                <StepActions
+                  onClick={() => setStep(step + 1)}
+                  onSkip={() => setStep(INPUT_STEP)}
+                />
+              ) : (
+                showInput && (
+                  <div
+                    className="flex w-full scroll-mb-8 flex-col items-stretch gap-6 sm:gap-8"
+                    ref={inputRef}
+                  >
+                    <Input
+                      animate
+                      onBack={() => setStep(0)}
+                      onSubmit={setValue}
+                      role={role}
+                    />
+                  </div>
+                )
+              )}
             </div>
           )}
         </div>

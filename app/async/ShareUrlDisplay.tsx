@@ -13,7 +13,7 @@ export function ShareUrlDisplay({ payload }: { payload: CompactPayload }) {
       <h2 className="text-xl font-medium text-white/90">Your Share URL</h2>
       <div className="flex w-full gap-2">
         <input
-          className="min-w-0 flex-1 rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-sm text-white"
+          className="min-w-0 flex-1 rounded-xl border border-white/[0.07] bg-white/3 px-4 py-3 text-sm text-white"
           readOnly
           type="text"
           value={shareUrl}

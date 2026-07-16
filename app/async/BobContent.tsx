@@ -1,14 +1,14 @@
 'use client'
 
 import { useParams, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { PlaintextData } from './binaryEncoding'
 
 import { LearnMoreLink } from '../LearnMoreLink'
 import { BobSubmission } from './BobSubmission'
 import { Input } from './Input'
-import { Instructions } from './Instructions'
+import { INSTRUCTION_STEP_COUNT, InstructionLog, StepActions } from './Instructions'
 import { ResultDisplay } from './ResultDisplay'
 
 type ValidateResponse =
@@ -20,6 +20,8 @@ type ValidateResponse =
       used: boolean
     }
 
+const INPUT_STEP = INSTRUCTION_STEP_COUNT
+
 export function BobContent() {
   const params = useParams()
   const pathname = usePathname()
@@ -28,10 +30,25 @@ export function BobContent() {
   const [bobsValue, setBobsValue] = useState<null | string>(null)
   const [error, setError] = useState<null | string>(null)
   const [loading, setLoading] = useState(true)
+  const [step, setStep] = useState(0)
+  const [showInput, setShowInput] = useState(false)
   const [existingResult, setExistingResult] = useState<null | {
     hasOverlap: boolean
     result: null | number
   }>(null)
+  const inputRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (step !== INPUT_STEP) return setShowInput(false)
+    const revealId = window.setTimeout(() => setShowInput(true), 280)
+    const scrollId = window.setTimeout(() => {
+      inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, 480)
+    return () => {
+      window.clearTimeout(revealId)
+      window.clearTimeout(scrollId)
+    }
+  }, [step])
 
   useEffect(() => {
     if (!payload) {
@@ -97,14 +114,28 @@ export function BobContent() {
         .
       </p>
 
-      <div className="flex w-full flex-col items-stretch gap-6 sm:gap-8">
-        <Input
-          label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
-          onSubmit={setBobsValue}
-          submitLabel="Do we have a win-win deal?"
-        />
-        <Instructions />
-        <LearnMoreLink className="text-sm text-white/30 mt-2 block hover:text-white/50 transition-colors" />
+      <div className="flex w-full flex-col items-stretch gap-4 sm:gap-6">
+        <InstructionLog step={step} />
+
+        {step < INPUT_STEP ? (
+          <StepActions
+            onClick={() => setStep(step + 1)}
+            onSkip={() => setStep(INPUT_STEP)}
+          />
+        ) : (
+          showInput && (
+            <div className="flex w-full scroll-mb-8 flex-col items-stretch gap-6 sm:gap-8" ref={inputRef}>
+              <Input
+                animate
+                label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}`}
+                onBack={() => setStep(0)}
+                onSubmit={setBobsValue}
+                submitLabel="Do we have a win-win deal?"
+              />
+              <LearnMoreLink className="text-sm text-white/30 mt-8 block hover:text-white/50 transition-colors" />
+            </div>
+          )
+        )}
       </div>
     </div>
   )
