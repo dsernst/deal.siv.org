@@ -103,7 +103,7 @@ export function BobContent() {
   return (
     <div className="flex w-full flex-col items-center gap-5 sm:gap-8">
       <p className="text-balance text-lg text-white/70 sm:text-xl">
-        You&apos;ve been invited as a{' '}
+        You&apos;ve been invited as a potential{' '}
         <span className="font-medium text-white">{bobRole === 'buyer' ? 'Buyer' : 'Seller'}</span>
         {aliceData.title ? (
           <>
