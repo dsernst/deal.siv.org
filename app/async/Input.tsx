@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { type CSSProperties, useEffect, useRef, useState } from 'react'
 
 import { AutosizeInput } from '../AutosizeInput'
 import { formatIntegerThousands, normalizePriceInput } from '../formatDisplay'
@@ -34,16 +34,26 @@ export function Input({
     return () => window.clearTimeout(id)
   }, [animate])
 
+  const stagger = (ms: number) =>
+    animate
+      ? { className: 'instruction-stagger', style: { '--stagger': `${ms}ms` } as CSSProperties }
+      : { className: '', style: undefined }
+
+  const labelStagger = stagger(0)
+  const inputStagger = stagger(140)
+  const actionStagger = stagger(280)
+
   return (
     <div className="flex w-full flex-col items-stretch">
       <label
-        className={`mb-3 block text-center text-[10px] uppercase tracking-[0.22em] text-white/25 sm:mb-4 ${animate ? 'instruction-stagger-1' : ''}`}
+        className={`mb-3 block text-center text-[10px] uppercase tracking-[0.22em] text-white/25 sm:mb-4 ${labelStagger.className}`}
         htmlFor="price-input"
+        style={labelStagger.style}
       >
         {label || `${roleTitle}'s ${description}`}
       </label>
 
-      <div className={`w-full ${animate ? 'instruction-stagger-2' : ''}`}>
+      <div className={`w-full ${inputStagger.className}`} style={inputStagger.style}>
         <AutosizeInput
           autoFocus={!animate}
           id="price-input"
@@ -58,16 +68,17 @@ export function Input({
       </div>
 
       <StepNext
-        className={`mt-5 sm:mt-8 ${animate ? 'instruction-stagger-3' : ''}`}
+        className={`mt-5 sm:mt-8 ${actionStagger.className}`}
         disabled={!input}
         onClick={() => input && onSubmit(input)}
         ref={$submit}
+        style={actionStagger.style}
       >
         {submitLabel}
       </StepNext>
 
       {onBack && (
-        <div className={`mt-3 ${animate ? 'instruction-stagger-3' : ''}`}>
+        <div className={`mt-3 ${actionStagger.className}`} style={actionStagger.style}>
           <StepBack onClick={onBack} />
         </div>
       )}
