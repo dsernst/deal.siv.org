@@ -3,8 +3,6 @@
 import { Check, Lock, X } from 'lucide-react'
 import { type ComponentProps, forwardRef, type ReactNode, useEffect, useRef, useState } from 'react'
 
-export const INSTRUCTION_STEP_COUNT = 3
-
 export const instructionSteps = [
   <div className="flex flex-col gap-4 text-left sm:gap-5" key="once">
     <OutcomeRow
@@ -52,6 +50,8 @@ export const instructionSteps = [
     point, to not miss potential win-win deals. &ldquo;Posturing&rdquo; is a losing strategy.
   </Hint>,
 ] as const
+
+export const INSTRUCTION_STEP_COUNT = instructionSteps.length
 
 export function InstructionLog({ step }: { step: number }) {
   const onInputStep = step >= INSTRUCTION_STEP_COUNT
