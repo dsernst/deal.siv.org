@@ -1,17 +1,14 @@
-import { description, title } from '../constants'
+import { SiteHeader } from '../SiteHeader'
 
-// Same chrome the root layout used to render, now scoped to /b invite pages
 export default function InviteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="min-h-screen p-8 pt-4 flex flex-col items-center justify-center text-center"
-      style={{ minHeight: '100dvh' }} // ignore iOS bottom bar
-    >
-      <h1 className="text-4xl font-bold mb-1">{title}</h1>
-      <p className="text-lg text-gray-400 mb-8">{description}</p>
-
-      {/* Content */}
-      {children}
+    <div className="flex min-h-dvh flex-col items-center px-4 pb-5 pt-6 text-center sm:px-8 sm:py-10">
+      <div className="flex w-full max-w-lg flex-col items-center gap-6 sm:my-auto sm:gap-10">
+        <div className="flex w-full flex-col items-center gap-6 sm:max-w-md sm:gap-8">
+          <SiteHeader />
+          {children}
+        </div>
+      </div>
     </div>
   )
 }

@@ -4,14 +4,16 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { LearnMoreLink } from '../LearnMoreLink'
+import { SiteHeader } from '../SiteHeader'
 import { CompactPayload } from './binaryEncoding'
 import { Input } from './Input'
-import { Instructions } from './Instructions'
-import { RoleSelector } from './RoleSelector'
+import { Instructions, StepNext } from './Instructions'
+import { InviteTitle } from './InviteTitle'
+import { type Choices, RoleSelector } from './RoleSelector'
 import { ShareUrlDisplay } from './ShareUrlDisplay'
 import { useInitiatePayload } from './useInitiatePayload'
 
-type Role = 'buyer' | 'seller' | null
+type Role = Choices | null
 
 export function Content() {
   const [titleStepDone, setTitleStepDone] = useState(false)
@@ -21,36 +23,37 @@ export function Content() {
 
   const { loading, signedPayload } = useInitiatePayload(role, value, title)
 
-  // Share URL on its own screen once ready (or loading/error)
   if (value) return <ShareUrlScreen {...{ loading, signedPayload }} />
 
   return (
     <>
-      <div className="flex flex-col items-center gap-8">
-        {/* Step 1: Optional title — always visible, editable */}
-        <TitleStep onNext={() => setTitleStepDone(true)} {...{ setTitle, title, titleStepDone }} />
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-6 sm:gap-10">
+        <SiteHeader />
 
-        {/* Step 2: Buyer / Seller — visible after title step, editable */}
-        {titleStepDone && (
-          <div className="w-full border-t border-gray-600/60 mt-2 pt-8 flex flex-col items-center">
-            <RoleSelector onSelect={setRole} selectedRole={role} />
-          </div>
-        )}
+        <div className="flex w-full max-w-md flex-col items-center gap-10">
+          <TitleStep onNext={() => setTitleStepDone(true)} {...{ setTitle, title, titleStepDone }} />
 
-        {/* Step 3: Cutoff amount — visible after role chosen, editable */}
-        {role && (
-          <div className="w-full border-t border-gray-600/60 mt-2 pt-8 flex flex-col items-center">
-            <Input onSubmit={setValue} role={role} />
-            <Instructions />
-          </div>
-        )}
+          {titleStepDone && (
+            <div className="flex w-full flex-col items-center border-t border-white/8 pt-10">
+              <RoleSelector onSelect={setRole} selectedRole={role} />
+            </div>
+          )}
+
+          {role && (
+            <div className="flex w-full flex-col items-stretch gap-6 border-t border-white/8 pt-10 sm:gap-8">
+              <Input onSubmit={setValue} role={role} />
+              <Instructions />
+            </div>
+          )}
+        </div>
       </div>
 
-      <LearnMoreLink />
-
-      <Link className="text-sm text-gray-400 mt-1 block hover:underline" href="/">
-        Switch to local-device mode
-      </Link>
+      <div className="flex shrink-0 flex-col items-center pt-8">
+        <LearnMoreLink className="text-sm text-white/30 block hover:text-white/50 transition-colors" />
+        <Link className="text-sm text-gray-400 mt-1 block hover:underline" href="/">
+          Switch to local-device mode
+        </Link>
+      </div>
     </>
   )
 }
@@ -64,14 +67,17 @@ function ShareUrlScreen({
 }) {
   return (
     <>
-      {loading ? (
-        <p className="text-gray-400">Creating your Share URL...</p>
-      ) : signedPayload ? (
-        <ShareUrlDisplay payload={signedPayload} />
-      ) : (
-        <p className="text-red-400">Error creating Share URL</p>
-      )}
-      <LearnMoreLink />
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-6 sm:gap-10">
+        <SiteHeader />
+        {loading ? (
+          <p className="text-gray-400">Creating your Share URL...</p>
+        ) : signedPayload ? (
+          <ShareUrlDisplay payload={signedPayload} />
+        ) : (
+          <p className="text-red-400">Error creating Share URL</p>
+        )}
+      </div>
+      <LearnMoreLink className="text-sm text-white/30 shrink-0 pt-8 block hover:text-white/50 transition-colors" />
     </>
   )
 }
@@ -89,15 +95,18 @@ function TitleStep({
 }) {
   const isEmpty = !title.trim()
 
+  if (titleStepDone && title.trim()) return <InviteTitle title={title.trim()} />
+  if (titleStepDone) return null
+
   return (
-    <div className="flex flex-col items-center gap-4">
-      <label className="text-sm text-gray-400 text-center" htmlFor="deal-title">
-        Optional deal name:
-      </label>
-      <div className="flex gap-2 items-center">
+    <div className="flex w-full max-w-md flex-col items-center gap-6 px-2">
+      <label className="flex w-full flex-col gap-2 text-left" htmlFor="deal-title">
+        <span className="text-[10px] uppercase tracking-[0.22em] text-white/25">
+          Optional deal name
+        </span>
         <input
           autoFocus
-          className="px-3 py-2 min-w-[12rem] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base placeholder:text-gray-500"
+          className="w-full rounded-xl border border-white/[0.07] bg-white/3 px-4 py-3 text-[15px] text-white placeholder:text-white/20 focus:border-white/20 focus:bg-white/5 focus:outline-none transition-colors"
           id="deal-title"
           onChange={(e) => setTitle(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && onNext()}
@@ -105,15 +114,19 @@ function TitleStep({
           type="text"
           value={title}
         />
-        {!titleStepDone && (
-          <button
-            className="w-16 px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100/10 active:bg-gray-100/20"
-            onClick={onNext}
-          >
-            {isEmpty ? 'Skip' : 'Next'}
-          </button>
-        )}
-      </div>
+      </label>
+
+      {isEmpty ? (
+        <button
+          className="text-sm text-white/35 hover:text-white/55 transition-colors cursor-pointer"
+          onClick={onNext}
+          type="button"
+        >
+          Skip
+        </button>
+      ) : (
+        <StepNext onClick={onNext} />
+      )}
     </div>
   )
 }

@@ -4,16 +4,19 @@ import { useRef, useState } from 'react'
 
 import { AutosizeInput } from '../AutosizeInput'
 import { formatIntegerThousands, normalizePriceInput } from '../formatDisplay'
+import { StepNext } from './Instructions'
 import { type Choices, roles } from './RoleSelector'
 
 export function Input({
   label,
   onSubmit,
   role,
+  submitLabel = 'Next',
 }: {
   label?: string
   onSubmit: (value: string) => void
   role?: Choices
+  submitLabel?: string
 }) {
   const [input, setInput] = useState('')
   const $submit = useRef<HTMLButtonElement>(null)
@@ -22,33 +25,34 @@ export function Input({
   const [roleTitle, description] = choice || []
 
   return (
-    <div className="inline-flex gap-4">
-      <div className="flex flex-col items-stretch">
-        <label className="text-sm font-medium mb-1 text-center" htmlFor="price-input">
-          {label || `${roleTitle}'s ${description}`}
-        </label>
+    <div className="flex w-full flex-col items-stretch">
+      <label
+        className="mb-3 block text-center text-[10px] uppercase tracking-[0.22em] text-white/25 sm:mb-4"
+        htmlFor="price-input"
+      >
+        {label || `${roleTitle}'s ${description}`}
+      </label>
 
-        <AutosizeInput
-          autoFocus
-          id="price-input"
-          inputMode="numeric"
-          onChange={(e) => setInput(normalizePriceInput(e.target.value))}
-          onKeyDown={(e) => e.key === 'Enter' && $submit.current?.click()}
-          pattern="\d*"
-          type="text"
-          value={formatIntegerThousands(input)}
-        />
+      <AutosizeInput
+        autoFocus
+        id="price-input"
+        inputMode="numeric"
+        onChange={(e) => setInput(normalizePriceInput(e.target.value))}
+        onKeyDown={(e) => e.key === 'Enter' && $submit.current?.click()}
+        pattern="\d*"
+        type="text"
+        value={formatIntegerThousands(input)}
+        variant="async"
+      />
 
-        {/* Submit Button */}
-        <button
-          className="mt-4 w-full cursor-pointer rounded-md border border-blue-500 px-4 py-2 text-white hover:bg-blue-500/10 active:bg-blue-500/20"
-          disabled={!input}
-          onClick={() => input && onSubmit(input)}
-          ref={$submit}
-        >
-          Next
-        </button>
-      </div>
+      <StepNext
+        className="mt-5 sm:mt-8"
+        disabled={!input}
+        onClick={() => input && onSubmit(input)}
+        ref={$submit}
+      >
+        {submitLabel}
+      </StepNext>
     </div>
   )
 }
