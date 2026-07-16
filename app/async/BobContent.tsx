@@ -77,12 +77,16 @@ export function BobContent() {
     <>
       {!bobsValue ? (
         <div className="flex flex-col items-center gap-4">
-          {aliceData.title && (
-            <p className="text-white font-medium text-center">{aliceData.title}</p>
-          )}
           <p className="text-gray-400 text-center mb-4">
-            You{"'"}ve been invited as a potential{' '}
-            <span className="font-semibold">{bobRole === 'buyer' ? 'Buyer' : 'Seller'}</span>.
+            You{"'"}ve been invited as a{' '}
+            <span className="font-semibold">{bobRole === 'buyer' ? 'Buyer' : 'Seller'}</span>
+            {aliceData.title ? (
+              <>
+                {' '}
+                for <span className="font-semibold text-white">{aliceData.title}</span>
+              </>
+            ) : null}
+            .
           </p>
           <Input
             label={`Enter your ${bobRole === 'buyer' ? 'max offer' : 'min price'}:`}
