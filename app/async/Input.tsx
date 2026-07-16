@@ -1,6 +1,6 @@
 'use client'
 
-import { type CSSProperties, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { AutosizeInput } from '../AutosizeInput'
 import { formatIntegerThousands, normalizePriceInput } from '../formatDisplay'
@@ -34,26 +34,21 @@ export function Input({
     return () => window.clearTimeout(id)
   }, [animate])
 
-  const stagger = (ms: number) =>
-    animate
-      ? { className: 'instruction-stagger', style: { '--stagger': `${ms}ms` } as CSSProperties }
-      : { className: '', style: undefined }
-
-  const labelStagger = stagger(0)
-  const inputStagger = stagger(140)
-  const actionStagger = stagger(280)
+  const base = 'instruction-stagger '
+  const labelStagger = animate ? base + '[animation-delay:0ms]' : ''
+  const inputStagger = animate ? base + '[animation-delay:140ms]' : ''
+  const actionStagger = animate ? base + '[animation-delay:280ms]' : ''
 
   return (
     <div className="flex w-full flex-col items-stretch">
       <label
-        className={`mb-3 block text-center text-[10px] uppercase tracking-[0.22em] text-white/25 sm:mb-4 ${labelStagger.className}`}
+        className={`mb-3 block text-center text-[10px] uppercase tracking-[0.22em] text-white/25 sm:mb-4 ${labelStagger}`}
         htmlFor="price-input"
-        style={labelStagger.style}
       >
         {label || `${roleTitle}'s ${description}`}
       </label>
 
-      <div className={`w-full ${inputStagger.className}`} style={inputStagger.style}>
+      <div className={`w-full ${inputStagger}`}>
         <AutosizeInput
           autoFocus={!animate}
           id="price-input"
@@ -68,17 +63,16 @@ export function Input({
       </div>
 
       <StepNext
-        className={`mt-5 sm:mt-8 ${actionStagger.className}`}
+        className={`mt-5 sm:mt-8 ${actionStagger}`}
         disabled={!input}
         onClick={() => input && onSubmit(input)}
         ref={$submit}
-        style={actionStagger.style}
       >
         {submitLabel}
       </StepNext>
 
       {onBack && (
-        <div className={`mt-3 ${actionStagger.className}`} style={actionStagger.style}>
+        <div className={`mt-3 ${actionStagger}`}>
           <StepBack onClick={onBack} />
         </div>
       )}

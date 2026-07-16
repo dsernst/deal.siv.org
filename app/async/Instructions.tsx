@@ -139,13 +139,11 @@ export const StepNext = forwardRef(function StepNext(
     className = '',
     disabled,
     onClick,
-    style,
   }: {
     children?: ReactNode
     className?: string
     disabled?: boolean
     onClick: () => void
-    style?: ComponentProps<'button'>['style']
   },
   ref: ComponentProps<'button'>['ref'],
 ) {
@@ -155,7 +153,6 @@ export const StepNext = forwardRef(function StepNext(
       disabled={disabled}
       onClick={onClick}
       ref={ref}
-      style={style}
       type="button"
     >
       {children}
